@@ -22,7 +22,8 @@ class Api::V1::OrdersController < ApplicationController
   private
 
   def order_params
-    params.require(:order).permit(:gift_type, :recipient_id)
+    params.require(:order).permit(:date, :status, 
+      order_details_attributes:[:recipient_id, :gift_type, :quantity])
   end
 
   def school
@@ -34,7 +35,7 @@ class Api::V1::OrdersController < ApplicationController
                  Order.find_by!(id: params[:id])
                else
                  Order.new(recipient_params.merge(school_id: school.id))
-                   end
+               end
   end
 
   def school_orders

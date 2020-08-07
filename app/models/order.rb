@@ -3,6 +3,7 @@ class Order < ApplicationRecord
   has_many :order_details
 
   validates :school_id, presence: true
+  accepts_nested_attributes_for :order_details
 
   include Filterable
 
