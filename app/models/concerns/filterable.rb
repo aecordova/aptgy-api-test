@@ -5,9 +5,9 @@ module Filterable
 
   module ClassMethods
     def filter_by(filters)
-      results = self.all
+      results = all
       filters.each do |k, v|
-        results = results.where("#{ k } = ?", v) unless v.blank?
+        results = results.where("#{k} = ?", v) unless v.blank?
       end
       results
     end

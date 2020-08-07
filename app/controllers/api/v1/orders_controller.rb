@@ -31,9 +31,9 @@ class Api::V1::OrdersController < ApplicationController
 
   def order
     @order ||= if params[:id]
-                     Order.find_by!(id: params[:id])
-                   else
-                     Order.new(recipient_params.merge(school_id: school.id))
+                 Order.find_by!(id: params[:id])
+               else
+                 Order.new(recipient_params.merge(school_id: school.id))
                    end
   end
 
