@@ -1,4 +1,4 @@
-class Api::V1::SchoolController < ApplicationController
+class Api::V1::SchoolsController < ApplicationController
   def create
     if school.save
       render status: :created
