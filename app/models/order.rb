@@ -1,6 +1,8 @@
 class Order < ApplicationRecord
   include Filterable
-  
+
+  # before_save :verify_order_not_shipped
+
   belongs_to :school
   has_many :items, class_name: 'OrderItem'
   has_many :recipients, through: :items
@@ -9,8 +11,8 @@ class Order < ApplicationRecord
 
   validates :school_id, presence: true
   validate :is_within_daily_gift_limit, :is_within_recipient_limit
+  validate  :correct_order_flow, :order_not_shipped, on: :update
 
-  before_save :verify_not_shipped
 
   enum status: {
     ORDER_RECEIVED: 1, ORDER_PROCESSING: 2, ORDER_SHIPPED: 3, ORDER_CANCELLED: 4
@@ -42,9 +44,18 @@ class Order < ApplicationRecord
     errors.add(:recipient_count, "Recipient limit exceeded, Max: #{MAX_RECIPIENTS}")
   end
   
-  def verify_not_shipped
-    return unless ORDER_SHIPPED?
+  def order_not_shipped
+    return unless attribute_in_database('status') === 'ORDER_SHIPPED'
     
-    errors.add(:status, "Cant modify order in #{status} status")
+    errors.add(:status, "-Can't modify order in #{attribute_in_database('status')} status")
+  end
+
+  def correct_order_flow
+    old_status = Order.statuses[attribute_in_database('status')]
+    new_status = Order.statuses[status]
+
+    return if ORDER_CANCELLED? || new_status === old_status+1
+
+    errors.add(:status, "-Orders must follow proper flow: Received->Processing->Shipped unless Cancelled")
   end
 end

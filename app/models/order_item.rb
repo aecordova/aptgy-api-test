@@ -31,9 +31,7 @@ class OrderItem < ApplicationRecord
   end
 
   def verify_not_shipped
-    return unless order.ORDER_SHIPPED?
-    
-    errors.add(:status, "Cant modify order in #{order.status} status")
+    errors.add(:status, "-Can't modify order in #{order.status} status") if order.ORDER_SHIPPED?
   end
 
 end
