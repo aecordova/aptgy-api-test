@@ -10,7 +10,7 @@ class ApplicationController < ActionController::API
              error: {
                message: error.message
              }
-    }
+           }
   end
 
   def handle_invalid_record(error)
@@ -19,6 +19,6 @@ class ApplicationController < ActionController::API
              error: {
                message: error.message
              }
-    }
+           }
   end
 end
