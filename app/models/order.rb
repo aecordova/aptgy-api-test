@@ -10,6 +10,8 @@ class Order < ApplicationRecord
   validates :school_id, presence: true
   validate :is_within_daily_gift_limit, :is_within_recipient_limit
 
+  before_save :verify_not_shipped
+
   enum status: {
     ORDER_RECEIVED: 1, ORDER_PROCESSING: 2, ORDER_SHIPPED: 3, ORDER_CANCELLED: 4
   }
@@ -37,6 +39,12 @@ class Order < ApplicationRecord
   def is_within_recipient_limit
     return unless recipient_count > MAX_RECIPIENTS_PER_ORDER
       
-    errors.add(:order_items, "Recipient limit exceeded, Max: #{MAX_RECIPIENTS}")
+    errors.add(:recipient_count, "Recipient limit exceeded, Max: #{MAX_RECIPIENTS}")
+  end
+  
+  def verify_not_shipped
+    return unless ORDER_SHIPPED?
+    
+    errors.add(:status, "Cant modify order in #{status} status")
   end
 end

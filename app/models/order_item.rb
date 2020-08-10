@@ -3,6 +3,8 @@ class OrderItem < ApplicationRecord
   belongs_to :recipient
 
   validate :is_within_daily_gift_limit, :is_within_recipient_limit
+  
+  before_save :verify_not_shipped
 
   include Filterable
 
@@ -26,6 +28,12 @@ class OrderItem < ApplicationRecord
     return unless recipients > MAX_RECIPIENTS_PER_ORDER
       
     errors.add(:order_items, "Recipient limit exceeded, Max: #{MAX_RECIPIENTS}")
+  end
+
+  def verify_not_shipped
+    return unless order.ORDER_SHIPPED?
+    
+    errors.add(:status, "Cant modify order in #{order.status} status")
   end
 
 end
