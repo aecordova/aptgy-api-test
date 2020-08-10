@@ -11,14 +11,14 @@ class OrderItem < ApplicationRecord
 
   private
 
-  def is_within_daily_gift_limit
+  def within_daily_gift_limit
     already_ordered = order.school.ordered_gifts_on order.date
     return unless (already_ordered + quantity) > MAX_ITEMS_PER_DAY
 
     errors.add('Gift Count:', "Daily gift limit exceeded, Max: #{MAX_ITEMS_PER_DAY}")
   end
 
-  def is_within_recipient_limit
+  def within_recipient_limit
     recipients = if order.recipient_id_list.include? recipient_id
                    order.recipient_count
                  else
@@ -26,7 +26,8 @@ class OrderItem < ApplicationRecord
                  end
     return unless recipients > MAX_RECIPIENTS_PER_ORDER
 
-    errors.add('Recipient Count:', "Recipient limit exceeded, Max: #{MAX_RECIPIENTS_PER_ORDER}")
+    errors.add('Recipient Count:',
+               "Recipient limit exceeded, Max: #{MAX_RECIPIENTS_PER_ORDER}")
   end
 
   def order_not_shipped
