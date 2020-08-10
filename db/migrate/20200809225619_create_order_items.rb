@@ -1,10 +1,11 @@
-class CreateOrderDetails < ActiveRecord::Migration[6.0]
+class CreateOrderItems < ActiveRecord::Migration[6.0]
   def change
-    create_table :order_details do |t|
+    create_table :order_items do |t|
       t.references :order, null: false, foreign_key: true
       t.references :recipient, null: false, foreign_key: true
       t.integer :gift_type
       t.integer :quantity
+      t.boolean :notify_user
 
       t.timestamps
     end

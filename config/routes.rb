@@ -3,10 +3,11 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :schools, only: %i[create update destroy] do
         resources :recipients, only: %i[index create]
-        resources :orders, only: :index
+        resources :orders, only: %i[index create]
       end
       resources :recipients, only: %i[update destroy]
-      resources :orders, only: %i[create update]
+      resources :orders, only: :update
+      resources :order_items, only: %i[update destroy]
     end
   end
 end

@@ -10,35 +10,48 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20_200_807_194_522) do
-  create_table 'orders', force: :cascade do |t|
-    t.integer 'school_id', null: false
-    t.integer 'recipient_id', null: false
-    t.integer 'status'
-    t.integer 'gift_type'
-    t.datetime 'created_at', precision: 6, null: false
-    t.datetime 'updated_at', precision: 6, null: false
-    t.index ['recipient_id'], name: 'index_orders_on_recipient_id'
-    t.index ['school_id'], name: 'index_orders_on_school_id'
+ActiveRecord::Schema.define(version: 2020_08_09_225619) do
+
+  create_table "order_items", force: :cascade do |t|
+    t.integer "order_id", null: false
+    t.integer "recipient_id", null: false
+    t.integer "gift_type"
+    t.integer "quantity"
+    t.boolean "notify_user", default: true
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["order_id"], name: "index_order_items_on_order_id"
+    t.index ["recipient_id"], name: "index_order_items_on_recipient_id"
   end
 
-  create_table 'recipients', force: :cascade do |t|
-    t.string 'name'
-    t.text 'address'
-    t.integer 'school_id', null: false
-    t.datetime 'created_at', precision: 6, null: false
-    t.datetime 'updated_at', precision: 6, null: false
-    t.index ['school_id'], name: 'index_recipients_on_school_id'
+  create_table "orders", force: :cascade do |t|
+    t.integer "school_id", null: false
+    t.integer "status"
+    t.date "date"
+    t.boolean "notify_user"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["school_id"], name: "index_orders_on_school_id"
   end
 
-  create_table 'schools', force: :cascade do |t|
-    t.string 'name'
-    t.text 'address'
-    t.datetime 'created_at', precision: 6, null: false
-    t.datetime 'updated_at', precision: 6, null: false
+  create_table "recipients", force: :cascade do |t|
+    t.string "name"
+    t.text "address"
+    t.integer "school_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["school_id"], name: "index_recipients_on_school_id"
   end
 
-  add_foreign_key 'orders', 'recipients'
-  add_foreign_key 'orders', 'schools'
-  add_foreign_key 'recipients', 'schools'
+  create_table "schools", force: :cascade do |t|
+    t.string "name"
+    t.text "address"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  add_foreign_key "order_items", "orders"
+  add_foreign_key "order_items", "recipients"
+  add_foreign_key "orders", "schools"
+  add_foreign_key "recipients", "schools"
 end
