@@ -22,8 +22,8 @@ class Api::V1::OrdersController < ApplicationController
   private
 
   def order_params
-    params.require(:order).permit(:date, :status, 
-      order_items_attributes:[:id, :recipient_id, :gift_type, :quantity])
+    params.require(:order).permit(:date, :status,
+                                  items_attributes: %i[id recipient_id gift_type quantity])
   end
 
   def school

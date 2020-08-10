@@ -23,9 +23,9 @@ class Api::V1::OrderItemsController < ApplicationController
 
   def item
     @item ||= if params[:id]
-                 OrderItem.find_by!(id: params[:id])
-               else
-                 OrderItem.new(order_item_params.merge(order_id: order.id))
+                OrderItem.find_by!(id: params[:id])
+              else
+                OrderItem.new(order_item_params.merge(order_id: order.id))
                end
   end
 
