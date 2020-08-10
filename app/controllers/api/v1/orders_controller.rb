@@ -4,19 +4,11 @@ class Api::V1::OrdersController < ApplicationController
   end
 
   def create
-    if order.save
-      render status: :created
-    else
-      render status: :unprocessable_entity
-    end
+    render status: :created if order.save!
   end
 
   def update
-    if order.update(order_params)
-      render status: :ok
-    else
-      render status: :unprocessable_entity
-    end
+    render status: :accepted if order.update!(order_params)
   end
 
   private

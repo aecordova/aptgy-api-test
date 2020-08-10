@@ -3,18 +3,18 @@ class Api::V1::OrderItemsController < ApplicationController
     render json: order_items
   end
 
+  def create
+    render status: :created if item.save!
+  end
+
   def update
-    if item.update(order_item_params)
-      render status: :ok
-    else
-      render status: :unprocessable_entity
-    end
+    render status: :accepted if item.update!(order_item_params)
   end
 
   private
 
   def order_item_params
-    params.require(:order_item).permit(:recipient_id, :gift_type, :quantity, :notify_user)
+    params.require(:order_item).permit(:recipient_id, :gift_type, :quantity)
   end
 
   def order

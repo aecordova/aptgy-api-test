@@ -2,7 +2,10 @@ class OrderItem < ApplicationRecord
   belongs_to :order
   belongs_to :recipient
 
-  validate :is_within_daily_gift_limit, :is_within_recipient_limit
+  validates :recipient_id, presence: true
+
+  validate :within_daily_gift_limit
+  validate :within_recipient_limit
   validate :order_not_shipped, on: :update
 
   include Filterable
@@ -12,10 +15,11 @@ class OrderItem < ApplicationRecord
   private
 
   def within_daily_gift_limit
-    already_ordered = order.school.ordered_gifts_on order.date
-    return unless (already_ordered + quantity) > MAX_ITEMS_PER_DAY
+    old_quantity = attribute_in_database('quantity') || 0
+    already_ordered = order.school.ordered_gifts_on(order.date) - old_quantity
+    return unless (already_ordered + quantity) > MAX_GIFTS_PER_DAY
 
-    errors.add('Gift Count:', "Daily gift limit exceeded, Max: #{MAX_ITEMS_PER_DAY}")
+    errors.add('Gift Count:', "Daily gift limit exceeded, Max: #{MAX_GIFTS_PER_DAY}")
   end
 
   def within_recipient_limit

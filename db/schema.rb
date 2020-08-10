@@ -26,7 +26,7 @@ ActiveRecord::Schema.define(version: 2020_08_09_225619) do
 
   create_table "orders", force: :cascade do |t|
     t.integer "school_id", null: false
-    t.integer "status"
+    t.integer "status", default: 1
     t.date "date"
     t.boolean "notify_user"
     t.datetime "created_at", precision: 6, null: false

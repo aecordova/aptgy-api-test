@@ -5,7 +5,6 @@ class CreateOrderItems < ActiveRecord::Migration[6.0]
       t.references :recipient, null: false, foreign_key: true
       t.integer :gift_type
       t.integer :quantity
-      t.boolean :notify_user
 
       t.timestamps
     end
