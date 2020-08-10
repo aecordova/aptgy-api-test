@@ -3,8 +3,7 @@ class OrderItem < ApplicationRecord
   belongs_to :recipient
 
   validate :is_within_daily_gift_limit, :is_within_recipient_limit
-  
-  before_save :verify_not_shipped
+  validate :order_not_shipped, on: :update
 
   include Filterable
 
@@ -13,25 +12,26 @@ class OrderItem < ApplicationRecord
   private
 
   def is_within_daily_gift_limit
-     return unless school.ordered_gifts_on order.date + quantity > MAX_ITEMS_PER_DAY
+    already_ordered = order.school.ordered_gifts_on order.date
+    return unless (already_ordered + quantity) > MAX_ITEMS_PER_DAY
         
-     errors.add(:gift_count, "Daily gift limit exceeded, Max: #{MAX_ITEMS_PER_DAY}")
+     errors.add('Gift Count:', "Daily gift limit exceeded, Max: #{MAX_ITEMS_PER_DAY}")
   end
 
   def is_within_recipient_limit
-    recipients = if order.recipient_list.includes?  recipient_id 
+    recipients = if order.recipient_id_list.include?  recipient_id 
                   order.recipient_count 
                  else
                   order.recipient_count + 1
                  end
-
     return unless recipients > MAX_RECIPIENTS_PER_ORDER
       
     errors.add(:order_items, "Recipient limit exceeded, Max: #{MAX_RECIPIENTS}")
   end
 
-  def verify_not_shipped
-    errors.add(:status, "-Can't modify order in #{order.status} status") if order.ORDER_SHIPPED?
+  def order_not_shipped
+    return unless order.ORDER_SHIPPED? || order.ORDER_CANCELLED?
+    
+    errors.add(:status, "-Can't modify order items when #{order.status}")
   end
-
 end

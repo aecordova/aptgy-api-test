@@ -45,16 +45,16 @@ class Order < ApplicationRecord
   end
   
   def order_not_shipped
-    return unless attribute_in_database('status') === 'ORDER_SHIPPED'
+    old_status = attribute_in_database('status')
+    return unless old_status === 'ORDER_SHIPPED'
     
-    errors.add(:status, "-Can't modify order in #{attribute_in_database('status')} status")
+    errors.add(:status, "-Can't modify order in #{old_status} status")
   end
 
   def correct_order_flow
     old_status = Order.statuses[attribute_in_database('status')]
     new_status = Order.statuses[status]
-
-    return if ORDER_CANCELLED? || new_status === old_status+1
+    return if ORDER_CANCELLED? || new_status === old_status+1 || new_status === old_status
 
     errors.add(:status, "-Orders must follow proper flow: Received->Processing->Shipped unless Cancelled")
   end
