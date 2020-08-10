@@ -10,6 +10,7 @@ class School < ApplicationRecord
   end
 
   def ordered_gifts_on date
-    orders_on(date).map { |order| order.gift_count }.reduce(:+)
+    gift_count = orders_on(date).map { |order| order.gift_count }.reduce(:+)
+    gift_count.nil? ? 0 : gift_count
   end
 end

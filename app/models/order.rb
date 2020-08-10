@@ -41,7 +41,7 @@ class Order < ApplicationRecord
   def is_within_recipient_limit
     return unless recipient_count > MAX_RECIPIENTS_PER_ORDER
       
-    errors.add(:recipient_count, "Recipient limit exceeded, Max: #{MAX_RECIPIENTS}")
+    errors.add(:recipient_count, "Recipient limit exceeded, Max: #{MAX_RECIPIENTS_PER_ORDER}")
   end
   
   def order_not_shipped

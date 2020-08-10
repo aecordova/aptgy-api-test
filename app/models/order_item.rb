@@ -26,7 +26,7 @@ class OrderItem < ApplicationRecord
                  end
     return unless recipients > MAX_RECIPIENTS_PER_ORDER
       
-    errors.add(:order_items, "Recipient limit exceeded, Max: #{MAX_RECIPIENTS}")
+    errors.add(:order_items, "Recipient limit exceeded, Max: #{MAX_RECIPIENTS_PER_ORDER}")
   end
 
   def order_not_shipped
