@@ -182,7 +182,6 @@ Verb              | GET
 URI               | /api/v1/orders/:order_id/items(.:format)
 Controller#Action | api/v1/order_items#index
 
-
 <!-- CONTRIBUTING -->
 ## Contributing
 
