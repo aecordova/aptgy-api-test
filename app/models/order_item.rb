@@ -4,7 +4,7 @@ class OrderItem < ApplicationRecord
 
   validate :within_daily_gift_limit, :within_recipient_limit
   validate :order_not_shipped_or_cancelled, on: :update
-  
+
   validates :recipient_id, presence: true
 
   include Filterable

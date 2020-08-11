@@ -10,9 +10,9 @@ class Order < ApplicationRecord
   validates :school_id, presence: true
   validates :date, presence: true
   validate :correct_order_flow, :order_not_shipped_or_cancelled, on: :update
-  
+
   before_save :flag_if_status_changed_to_shipped
-  
+
   enum status: {
     ORDER_RECEIVED: 1, ORDER_PROCESSING: 2, ORDER_SHIPPED: 3, ORDER_CANCELLED: 4
   }
@@ -28,15 +28,14 @@ class Order < ApplicationRecord
   def recipient_count
     recipient_id_list.count
   end
-  
-  
+
   private
 
   def flag_if_status_changed_to_shipped
     old_status = attribute_in_database('status')
     flag_for_notification if status == 'ORDER_SHIPPED' && old_status != 'ORDER_SHIPPED'
   end
-  
+
   def order_not_shipped_or_cancelled
     old_status = attribute_in_database('status')
     return unless old_status == 'ORDER_SHIPPED' || old_status == 'ORDER_CANCELLED'
