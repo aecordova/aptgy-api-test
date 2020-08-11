@@ -89,94 +89,109 @@ These are the endpoints:
 | API EndPoints:  |   |
 |---|---|
 |Create a new User Token|   |
-Prefix            | None
 Verb              | POST
 URI               | /auth(.:format)
 Controller#Action | devise_token_auth/registrations#create
+Request Params | email, password, password confirmation on body
+Expected Response | status: 200 with credentials on Headers
 |   |   |
 |Create a new school record|   |
-Prefix            | api_v1_schools
 Verb              | POST
 URI               | /api/v1/schools(.:format)
 Controller#Action | api/v1/schools#create
+Request Params | name, address on body
+Expected Response | status: 201
 |   |   |
 |Update a school record|   |
-Prefix            | api_v1_school
 Verb              | PATCH/PUT
 URI               | /api/v1/schools/:id(.:format)
 Controller#Action | api/v1/schools#update
+Request Params | modified name or address on body
+Expected Response | status: 202
 |   |   |
 |Delete a school record|   |
-Prefix            | None
 Verb              | DELETE
 URI               | /api/v1/schools/:id(.:format)
 Controller#Action | api/v1/schools#destroy
+Request Params | school id on url
+Expected Response | status: 202
 |   |   |
 |Create a new recipient record|   |
-Prefix            | None
 Verb              | POST
 URI               | /api/v1/schools/:school_id/recipients(.:format)
 Controller#Action | api/v1/recipients#create
+Request Params | name, address on body
+Expected Response | status: 201
 |   |   |
 |Update a recipient record|   |
-Prefix            | api_v1_recipient
 Verb              | PATCH/PUT
 URI               | /api/v1/recipients/:id(.:format)
 Controller#Action | api/v1/recipients#update
+Request Params | modified name or address on body
+Expected Response | status: 202
 |   |   |
 |Delete a recipient record|   |
-Prefix            | None
 Verb              | DELETE
 URI               | /api/v1/recipients/:id(.:format)
 Controller#Action | api/v1/recipients#destroy
+Request Params | recipient id on url
+Expected Response | status: 202
 |   |   |
 |List all Recipients for a school|   |
-Prefix            | api_v1_school_recipients
 Verb              | GET
 URI               | /api/v1/schools/:school_id/recipients(.:format)
 Controller#Action | api/v1/recipients#index
+Request Params | school_id on url
+Expected Response | status: 200, json object with recipient list
 |   |   |
 |Create a new order record for a school|   |
-Prefix            | None
 Verb              | POST
 URI               | /api/v1/schools/:school_id/orders(.:format)
 Controller#Action | api/v1/orders#create
+Request Params | school_id on url, date on body
+Expected Response | status: 201
 |   |   |
 |Update an order record|   |
-Prefix            | api_v1_order
 Verb              | PATCH/PUT
 URI               | /api/v1/orders/:id(.:format)
 Controller#Action | api/v1/orders#update
+Request Params | id on url, modified date or status on body
+Expected Response | status: 202
 |   |   |
 |List all orders submitted for a given school|   |
-Prefix            | api_v1_school_orders
 Verb              | GET
 URI               | /api/v1/schools/:school_id/orders(.:format)
 Controller#Action | api/v1/orders#index
+Request Params | school_id on url
+Expected Response | status: 200, json object with order list
 |   |   |
 |Create an order item record for a given order|   |
-Prefix            | None
 Verb              | POST
 URI               | /api/v1/orders/:order_id/items(.:format)
 Controller#Action | api/v1/order_items#create
+Request Params | order_id, recipient_id, gift_type(as described in Constraints), quantity(as described in Constraints) on body
+Expected Response | status: 201
 |   |   |
 |Update an order_item record|   |
-Prefix            | api_v1_order_item
 Verb              | PATCH/PUT
 URI               | /api/v1/order_items/:id(.:format)
 Controller#Action | api/v1/order_items#update
+Request Params | modified attributes on body
+Expected Response | status: 202
 |   |   |
 |Delete an order_item record|   |
-Prefix            | None
 Verb              | DELETE
 URI               | /api/v1/order_items/:id(.:format)
 Controller#Action | api/v1/order_items#destroy
+Request Params | order_item id on url
+Expected Response | status: 202
 |   |   |
 |List all order items for a given order|   |
-Prefix            | api_v1_order_items
 Verb              | GET
 URI               | /api/v1/orders/:order_id/items(.:format)
 Controller#Action | api/v1/order_items#index
+Request Params | order_id on url
+Expected Response | status: 200, json object with order_item list
 
 <!-- CONTRIBUTING -->
 ## Contributing
