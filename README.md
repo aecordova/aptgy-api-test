@@ -27,14 +27,10 @@ The purpose of this project is to demonstrate knowledge and proficiency on Ruby 
 
 ### Dev Environment Requirements:
 * Ruby needs to be installed to run the code, check [here](https://www.ruby-lang.org/en/documentation/installation/) for further steps
+* Postgres DB needs to be setup locally to run the code, check docs [here](https://www.postgresql.org/docs/) for further guidance
 
 
 ### ⭐️ Running the code
-
-#### Live Version:
-
-You can find a live running version of this app on the following link: [Aptgy!]()
-
 #### Instructions for running on local environment:
 
 1. Clone the repo
