@@ -14,7 +14,6 @@ RSpec.describe Order, type: :model do
     it { should define_enum_for(:status) }
 
     it 'Is not valid when order_item breaches daily gift limit' do
-
     end
     it 'is not valid when order_item breaches recipient limit' do
     end

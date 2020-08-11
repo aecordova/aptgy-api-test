@@ -26,7 +26,7 @@ RSpec.describe OrderItem, type: :model do
   end
 
   describe 'methods' do
-    it 'Calculates the gift count of an order' do 
+    it 'Calculates the gift count of an order' do
     end
 
     it 'Returns an array of distinct recipient_ids' do
