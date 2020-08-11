@@ -12,9 +12,12 @@
 
 ActiveRecord::Schema.define(version: 2020_08_11_163824) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "order_items", force: :cascade do |t|
-    t.integer "order_id", null: false
-    t.integer "recipient_id", null: false
+    t.bigint "order_id", null: false
+    t.bigint "recipient_id", null: false
     t.integer "gift_type"
     t.integer "quantity"
     t.datetime "created_at", precision: 6, null: false
@@ -24,7 +27,7 @@ ActiveRecord::Schema.define(version: 2020_08_11_163824) do
   end
 
   create_table "orders", force: :cascade do |t|
-    t.integer "school_id", null: false
+    t.bigint "school_id", null: false
     t.integer "status", default: 1
     t.date "date"
     t.boolean "notify_user"
@@ -36,7 +39,7 @@ ActiveRecord::Schema.define(version: 2020_08_11_163824) do
   create_table "recipients", force: :cascade do |t|
     t.string "name"
     t.text "address"
-    t.integer "school_id", null: false
+    t.bigint "school_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["school_id"], name: "index_recipients_on_school_id"
