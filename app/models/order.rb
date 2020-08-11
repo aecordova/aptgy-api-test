@@ -8,8 +8,11 @@ class Order < ApplicationRecord
   accepts_nested_attributes_for :items
 
   validates :school_id, presence: true
-  validate :correct_order_flow, :order_not_shipped, on: :update
-
+  validates :date, presence: true
+  validate :correct_order_flow, :order_not_shipped_or_cancelled, on: :update
+  
+  before_save :flag_if_status_changed_to_shipped
+  
   enum status: {
     ORDER_RECEIVED: 1, ORDER_PROCESSING: 2, ORDER_SHIPPED: 3, ORDER_CANCELLED: 4
   }
@@ -25,12 +28,18 @@ class Order < ApplicationRecord
   def recipient_count
     recipient_id_list.count
   end
-
+  
+  
   private
 
-  def order_not_shipped
+  def flag_if_status_changed_to_shipped
     old_status = attribute_in_database('status')
-    return unless old_status == 'ORDER_SHIPPED'
+    flag_for_notification if status == 'ORDER_SHIPPED' && old_status != 'ORDER_SHIPPED'
+  end
+  
+  def order_not_shipped_or_cancelled
+    old_status = attribute_in_database('status')
+    return unless old_status == 'ORDER_SHIPPED' || old_status == 'ORDER_CANCELLED'
 
     errors.add('Status:', "Can't modify order in #{old_status} status")
   end
@@ -42,5 +51,9 @@ class Order < ApplicationRecord
 
     errors.add('Status:',
                'Must follow proper flow: Received->Processing->Shipped unless Cancelled')
+  end
+
+  def flag_for_notification
+    self.notify_user = true
   end
 end

@@ -2,11 +2,10 @@ class OrderItem < ApplicationRecord
   belongs_to :order
   belongs_to :recipient
 
+  validate :within_daily_gift_limit, :within_recipient_limit
+  validate :order_not_shipped_or_cancelled, on: :update
+  
   validates :recipient_id, presence: true
-
-  validate :within_daily_gift_limit
-  validate :within_recipient_limit
-  validate :order_not_shipped, on: :update
 
   include Filterable
 
@@ -34,7 +33,7 @@ class OrderItem < ApplicationRecord
                "Recipient limit exceeded, Max: #{MAX_RECIPIENTS_PER_ORDER}")
   end
 
-  def order_not_shipped
+  def order_not_shipped_or_cancelled
     return unless order.ORDER_SHIPPED? || order.ORDER_CANCELLED?
 
     errors.add('Status:', "Can't modify order items when #{order.status}")
