@@ -17,7 +17,6 @@ ActiveRecord::Schema.define(version: 2020_08_09_225619) do
     t.integer "recipient_id", null: false
     t.integer "gift_type"
     t.integer "quantity"
-    t.boolean "notify_user"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["order_id"], name: "index_order_items_on_order_id"

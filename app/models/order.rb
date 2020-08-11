@@ -38,7 +38,7 @@ class Order < ApplicationRecord
 
   def order_not_shipped_or_cancelled
     old_status = attribute_in_database('status')
-    return unless old_status == 'ORDER_SHIPPED' || old_status == 'ORDER_CANCELLED'
+    return unless %w[ORDER_SHIPPED ORDER_CANCELLED].include? old_status
 
     errors.add('Status:', "Can't modify order in #{old_status} status")
   end
