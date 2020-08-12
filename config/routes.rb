@@ -14,6 +14,8 @@ Rails.application.routes.draw do
 
       resources :recipients, only: %i[update destroy]
       resources :order_items, only: %i[update destroy]
+
+      root to: 'docs#index'
     end
   end
 end
